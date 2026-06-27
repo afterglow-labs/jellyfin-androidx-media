@@ -41,10 +41,10 @@ jobs:
 
     - name: Assemble Release AAR via Modern Gradle Core
       run: |
-        ./gradlew :media3-ffmpeg-decoder:assembleRelease --no-daemon
+        ./gradlew :androidx-media-lib-decoder-ffmpeg:assembleRelease --no-daemon
 
     - name: Publish Compiled Player Extension Package
       uses: actions/upload-artifact@v4
       with:
         name: custom-media3-ffmpeg-decoder-aar
-        path: media3-ffmpeg-decoder/build/outputs/aar/*.aar
+        path: media/libraries/decoder_ffmpeg/build/outputs/aar/*.aar
