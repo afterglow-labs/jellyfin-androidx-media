@@ -5,41 +5,35 @@ on:
     branches: [ "master", "main" ]
   workflow_dispatch:
 
+env:
+  NDK_VER: 26.1.10909125
+  CMAKE_VER: 3.31.1
+
 jobs:
   modern-build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Modern Source Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
         submodules: 'recursive' # Synchronizes upstream media and ffmpeg blocks
 
     - name: Set up Modern JDK 21
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5.1.0
       with:
         distribution: 'temurin'
-        java-version: '21' # Upgraded from 17 to modern LTS standard
+        java-version: '21'
 
-    - name: Setup Android SDK Environment
-      uses: android-actions/setup-android@v3
-
-    # Upgraded to modern NDK 27 toolchains for optimized compiler routines
-    - name: Install Latest Android NDK 27
+    - name: Install correct NDK and CMake
       run: |
-        sdkmanager --install "ndk;27.0.12077973"
-        echo "ANDROID_NDK_HOME=${ANDROID_SDK_ROOT}/ndk/27.0.12077973" >> $GITHUB_ENV
+        sudo ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --install "ndk;${NDK_VER}" "cmake;${CMAKE_VER}"
 
     - name: Enforce Script Execution Permissions
       run: |
         chmod +x ./build.sh
         chmod +x ./gradlew
         chmod +x ./media/libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh
-
-    - name: Inject Dynamic Architecture Paths into Build
-      run: |
-        # Swaps out Jellyfin's older static string to match your fresh NDK 27 environment path
-        sed -i 's|export ANDROID_NDK_PATH=.*|export ANDROID_NDK_PATH='"${ANDROID_NDK_HOME}"'|g' ./build.sh
 
     - name: Execute Native FFmpeg Media Cross-Compilation
       run: |
