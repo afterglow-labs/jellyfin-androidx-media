@@ -1,0 +1,26 @@
+diff --git a/libraries/decoder_ffmpeg/src/main/java/androidx/media3/decoder/ffmpeg/FfmpegLibrary.java b/libraries/decoder_ffmpeg/src/main/java/androidx/media3/decoder/ffmpeg/FfmpegLibrary.java
+index e01b04f2ff..efa38585ca 100644
+--- a/libraries/decoder_ffmpeg/src/main/java/androidx/media3/decoder/ffmpeg/FfmpegLibrary.java
++++ b/libraries/decoder_ffmpeg/src/main/java/androidx/media3/decoder/ffmpeg/FfmpegLibrary.java
+@@ -149,6 +149,9 @@ public final class FfmpegLibrary {
+         return "pcm_mulaw";
+       case MimeTypes.AUDIO_ALAW:
+         return "pcm_alaw";
++      case MimeTypes.VIDEO_MP4V:
++      case MimeTypes.VIDEO_DIVX:
++        return "mpeg4";
+       case MimeTypes.VIDEO_H264:
+         return "h264";
+       case MimeTypes.VIDEO_H265:
+diff --git a/libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh b/libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh
+index 9d4faa36c0..c1452ba148 100755
+--- a/libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh
++++ b/libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh
+@@ -38,7 +38,6 @@ COMMON_OPTIONS="
+     --disable-avdevice
+     --disable-avformat
+     --disable-swscale
+-    --disable-postproc
+     --disable-avfilter
+     --disable-symver
+     --enable-swresample

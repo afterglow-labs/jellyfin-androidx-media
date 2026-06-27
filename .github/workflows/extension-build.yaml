@@ -33,8 +33,6 @@ jobs:
           key: ${{ runner.os }}-${{ env.NDK_VER }}
       - name: Install correct NDK and CMake
         run: sudo ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --install "ndk;${NDK_VER}" "cmake;${CMAKE_VER}"
-      - name: Patch deprecated FFmpeg configure flag
-        run: sed -i '/--disable-postproc/d' ./media/libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh
       - name: Build ffmpeg
         run: ./build.sh
       - name: Build extension and publish library locally

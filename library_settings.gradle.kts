@@ -1,53 +1,34 @@
 val mediaRootDir = file("media")
 
-val modulePrefix = ":androidx-media-"
-gradle.extra["androidxMediaModulePrefix"] = modulePrefix
+val mediaModulePrefix = "androidx-media-"
+val mediaProjectPrefix = ":$mediaModulePrefix"
+gradle.extra["androidxMediaModulePrefix"] = mediaModulePrefix
 
 if (!gradle.extra.has("androidxMediaSettingsDir")) {
     gradle.extra["androidxMediaSettingsDir"] = mediaRootDir.getCanonicalPath()
 }
 
-include(modulePrefix + "lib-common")
-project(modulePrefix + "lib-common").projectDir = File(mediaRootDir, "libraries/common")
+fun includeMediaModule(name: String, path: String) {
+    val projectPath = mediaProjectPrefix + name
+    include(projectPath)
+    project(projectPath).projectDir = File(mediaRootDir, path)
+}
 
-include(modulePrefix + "lib-container")
-project(modulePrefix + "lib-container").projectDir = File(mediaRootDir, "libraries/container")
+includeMediaModule("lib-common", "libraries/common")
+includeMediaModule("lib-container", "libraries/container")
+includeMediaModule("lib-exoplayer", "libraries/exoplayer")
+includeMediaModule("lib-exoplayer-dash", "libraries/exoplayer_dash")
+includeMediaModule("lib-database", "libraries/database")
+includeMediaModule("lib-datasource", "libraries/datasource")
+includeMediaModule("lib-decoder", "libraries/decoder")
+includeMediaModule("lib-decoder-ffmpeg", "libraries/decoder_ffmpeg")
+includeMediaModule("lib-extractor", "libraries/extractor")
+includeMediaModule("lib-effect", "libraries/effect")
+includeMediaModule("lib-inspector", "libraries/inspector")
+includeMediaModule("lib-inspector-frame", "libraries/inspector_frame")
+includeMediaModule("lib-muxer", "libraries/muxer")
+includeMediaModule("lib-transformer", "libraries/transformer")
 
-include(modulePrefix + "lib-exoplayer")
-project(modulePrefix + "lib-exoplayer").projectDir = File(mediaRootDir, "libraries/exoplayer")
-
-include(modulePrefix + "lib-exoplayer-dash")
-project(modulePrefix + "lib-exoplayer-dash").projectDir = File(mediaRootDir, "libraries/exoplayer_dash")
-
-include(modulePrefix + "lib-database")
-project(modulePrefix + "lib-database").projectDir = File(mediaRootDir, "libraries/database")
-
-include(modulePrefix + "lib-datasource")
-project(modulePrefix + "lib-datasource").projectDir = File(mediaRootDir, "libraries/datasource")
-
-include(modulePrefix + "lib-decoder")
-project(modulePrefix + "lib-decoder").projectDir = File(mediaRootDir, "libraries/decoder")
-include(modulePrefix + "lib-decoder-ffmpeg")
-project(modulePrefix + "lib-decoder-ffmpeg").projectDir = File(mediaRootDir, "libraries/decoder_ffmpeg")
-
-include(modulePrefix + "lib-extractor")
-project(modulePrefix + "lib-extractor").projectDir = File(mediaRootDir, "libraries/extractor")
-
-include(modulePrefix + "lib-effect")
-project(modulePrefix + "lib-effect").projectDir = File(mediaRootDir, "libraries/effect")
-
-include(modulePrefix + "lib-inspector")
-project(modulePrefix + "lib-inspector").projectDir = File(mediaRootDir, "libraries/inspector")
-
-include(modulePrefix + "lib-muxer")
-project(modulePrefix + "lib-muxer").projectDir = File(mediaRootDir, "libraries/muxer")
-
-include(modulePrefix + "lib-transformer")
-project(modulePrefix + "lib-transformer").projectDir = File(mediaRootDir, "libraries/transformer")
-
-include(modulePrefix + "test-utils-robolectric")
-project(modulePrefix + "test-utils-robolectric").projectDir = File(mediaRootDir, "libraries/test_utils_robolectric")
-include(modulePrefix + "test-data")
-project(modulePrefix + "test-data").projectDir = File(mediaRootDir, "libraries/test_data")
-include(modulePrefix + "test-utils")
-project(modulePrefix + "test-utils").projectDir = File(mediaRootDir, "libraries/test_utils")
+includeMediaModule("test-utils-robolectric", "libraries/test_utils_robolectric")
+includeMediaModule("test-data", "libraries/test_data")
+includeMediaModule("test-utils", "libraries/test_utils")
