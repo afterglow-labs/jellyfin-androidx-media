@@ -9,9 +9,13 @@ if (!gradle.extra.has("androidxMediaSettingsDir")) {
 }
 
 fun includeMediaModule(name: String, path: String) {
+    val projectDir = File(mediaRootDir, path)
+    if (!projectDir.isDirectory) {
+        return
+    }
     val projectPath = mediaProjectPrefix + name
     include(projectPath)
-    project(projectPath).projectDir = File(mediaRootDir, path)
+    project(projectPath).projectDir = projectDir
 }
 
 includeMediaModule("lib-common", "libraries/common")
