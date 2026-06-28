@@ -44,6 +44,13 @@ remove_deprecated_ffmpeg_configure_flags() {
     perl -0pi -e 's/\n\s*--disable-postproc//g' "${build_ffmpeg}"
 }
 
+limit_libyuv_build_to_shared_library() {
+    local build_yuv="${FFMPEG_MOD_PATH}/jni/build_yuv.sh"
+    if [[ -f "${build_yuv}" ]]; then
+        perl -0pi -e 's/cmake --build \./cmake --build . --target yuv_shared/g' "${build_yuv}"
+    fi
+}
+
 prepare_libyuv() {
     if [[ -d "${LIBYUV_PATH}/.git" ]]; then
         git -C "${LIBYUV_PATH}" fetch --depth 1 origin "${LIBYUV_REV}"
@@ -59,6 +66,7 @@ prepare_libyuv() {
 
 apply_legacy_media_patch_if_needed "${ROOT_DIR}/patches/androidx-media-ffmpeg-modern-build.patch"
 remove_deprecated_ffmpeg_configure_flags
+limit_libyuv_build_to_shared_library
 
 [[ -z "${ANDROID_NDK_PATH:-}" || ! -d "$ANDROID_NDK_PATH" ]] && echo "No NDK found, quitting…" && exit 1
 
