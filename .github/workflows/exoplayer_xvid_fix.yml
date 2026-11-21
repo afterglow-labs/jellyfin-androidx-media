@@ -1,8 +1,6 @@
 name: Modernized JDK21 Media3 Extension Build Pipeline
 
 on:
-  push:
-    branches: [ "master", "main" ]
   workflow_dispatch:
 
 env:
